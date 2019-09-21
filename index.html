@@ -7,14 +7,14 @@
 <body>
 <center>
     <form action="/{{ varC }}/login" method="post">
-     Time:
-        <select>
+     What Time(s) will you need a ride:
+        <select name="time">
             <option value="AM" type='text'>I'd like to carpool to work.</option>
             <option value="PM" type='text'>I'd like to carpool home after work</option>
             <option value="BOTH" type='text'>I'd like to carpool both to and from work</option>
         </select> <br><br><br>
        Would you like to be a Driver or a Passenger:
-       <select>
+       <select name="dp">
             <option value="driver" type='text'>I'd like to drive.</option>
             <option value="passenger" type='text'>I'd like to be a passenger.</option>
         </select><br>

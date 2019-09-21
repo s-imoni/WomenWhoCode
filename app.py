@@ -19,21 +19,34 @@ def index(varC):
         return render_template('index.html', varC=varC)
 
 
-@app.route('/<varC>/final')
+@app.route('/<varC>/final', methods=['POST'])
 def final(varC):
+    print(varC)
+    phone = re.sub("[-()]","", request.form["phone"])  # Phone Number
+    print(phone)
+    streetName = request.form["sn"].title()
+    print(streetName)
+    city = request.form["city"]
+    print(city)
+    address = request.form["state"]
+    print(address)
+    zipcode = request.form["zip"]
+    print(zipcode)
+    
     return "here are your results"
 
 
-@app.route('/<varC>/login', methods=['POST', 'GET'])
+@app.route('/<varC>/login', methods=['POST'])
 def login(varC):
+    time = request.form.get('time')  # AM PM BOTH
+    print(time)
+    dOrp = request.form.get('dp')  # DRIVER / PASSENGER
     error = None
-    if request.args.get('driver') == "I'd like to drive.":
+    if dOrp == 'driver':
+        print("driver");
         return render_template('driver.html', varC=varC)
     else:
         return render_template('passenger.html', varC=varC)
-    # the code below is executed if the request method
-    # was GET or the credentials were invalid
-    return render_template('login.html', error=error)
 
 
 app.run(debug=True, use_debugger=False, use_reloader=False, passthrough_errors=True)
