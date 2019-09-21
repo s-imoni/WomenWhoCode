@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<script type="text/javascript">
+    function buttonClick(event){
+        var varC = document.getElementById("company").value;
+        window.location.replace(varC);
+}
+</script>
+<head>
+    <meta charset="UTF-8">
+    <title>RideShare</title>
+</head>
+<body>
+<center>
+    Welcome to RideShare! <br><br><br>
+    <form onsubmit="buttonClick(); return false;" action="/company">
+       Enter Your Company Name: <br>
+        <input type="text" name="company" id="company"><br></input>
+        <button value="Submit">Submit</button>
+    </form>
+</center>
+</body>
+</html>
