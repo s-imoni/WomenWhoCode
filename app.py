@@ -1,9 +1,8 @@
 import re
-
 from flask import Flask, url_for, render_template, request
-
 app = Flask(__name__)
-
+LEAVE = 0.00;
+ARRIVAL = 0.00;
 
 @app.route('/')
 def intro():
@@ -15,7 +14,6 @@ def index(varC):
     error = None
     print(varC)
     if request.method == 'GET':
-        print(varC)
         return render_template('index.html', varC=varC)
 
 
@@ -28,22 +26,30 @@ def final(varC):
     print(streetName)
     city = request.form["city"]
     print(city)
-    address = request.form["state"]
-    print(address)
+    state = request.form["state"]
+    print(state)
     zipcode = request.form["zip"]
     print(zipcode)
-    
-    return "here are your results"
+    if driver == 'driver':
+        numSeats = request.form["seats"]  # SEATS
+        print(numSeats)
+        return "Your Route Will Appear Shortly"
+    return "Your Route Will Appear Shortly"
+
 
 
 @app.route('/<varC>/login', methods=['POST'])
 def login(varC):
     time = request.form.get('time')  # AM PM BOTH
     print(time)
+    global meb;
+    meb = time;
     dOrp = request.form.get('dp')  # DRIVER / PASSENGER
+    global driver;
+    driver = dOrp;
+    print(dOrp)
     error = None
     if dOrp == 'driver':
-        print("driver");
         return render_template('driver.html', varC=varC)
     else:
         return render_template('passenger.html', varC=varC)
