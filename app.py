@@ -1,8 +1,24 @@
 import re
+import pyrebase
+
 from flask import Flask, url_for, render_template, request
+from flask import *
+
+config= {
+    "apiKey": "AIzaSyAR2qriqMRofJ0bnvLPWapI3pdI_7gZpAE",
+    "authDomain": "rideshare-5860d.firebaseapp.com",
+    "databaseURL": "https://rideshare-5860d.firebaseio.com",
+    "projectId": "rideshare-5860d",
+    "storageBucket": "rideshare-5860d.appspot.com",
+    "messagingSenderId": "837425501722",    
+}
+
+firebase = pyrebase.initialize_app(config)
+db=firebase.database()
+
+
 app = Flask(__name__)
-LEAVE = 0.00;
-ARRIVAL = 0.00;
+
 
 @app.route('/')
 def intro():
@@ -14,6 +30,7 @@ def index(varC):
     error = None
     print(varC)
     if request.method == 'GET':
+        print(varC)
         return render_template('index.html', varC=varC)
 
 
@@ -22,37 +39,47 @@ def final(varC):
     print(varC)
     phone = re.sub("[-()]","", request.form["phone"])  # Phone Number
     print(phone)
-    streetName = request.form["sn"].title()
+    streetName = request.form.get('sn')
     print(streetName)
-    city = request.form["city"]
+    city = request.form.get('city')
     print(city)
-    state = request.form["state"]
-    print(state)
-    zipcode = request.form["zip"]
+    address = request.form.get('state')
+    print(address)
+    zipcode = request.form.get('zip')
     print(zipcode)
-    if driver == 'driver':
-        numSeats = request.form["seats"]  # SEATS
-        print(numSeats)
-        return "Your Route Will Appear Shortly"
-    return "Your Route Will Appear Shortly"
+    thisDriver=request.form.get('isDriver')
+    thisTime=request.form.get('userTime')
+    thisSeats=request.form.get('seats')
+    thisCompany= varC
+    
+    post = {
+        "company" : thisCompany,
+        "isDriver" : thisDriver,
+        "seats": thisSeats,
+        "isTime" : thisTime,
+        "phone" : phone,
+        "city" : city,
+        "streetName" : streetName,
+        "address" : address,
+        "zipcode" : zipcode,
+    }
 
+    db.child("Posts").child(id).update(post)
+
+    return render_template('enterName.html')
 
 
 @app.route('/<varC>/login', methods=['POST'])
 def login(varC):
     time = request.form.get('time')  # AM PM BOTH
     print(time)
-    global meb;
-    meb = time;
     dOrp = request.form.get('dp')  # DRIVER / PASSENGER
-    global driver;
-    driver = dOrp;
-    print(dOrp)
     error = None
     if dOrp == 'driver':
-        return render_template('driver.html', varC=varC)
+        print("driver");
+        return render_template('driver.html', varC=varC, userTime = time)
     else:
-        return render_template('passenger.html', varC=varC)
+        return render_template('passenger.html', varC=varC, userTime = time)
 
 
 app.run(debug=True, use_debugger=False, use_reloader=False, passthrough_errors=True)
